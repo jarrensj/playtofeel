@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "play to feel",
-  description: "play to feel",
+  title: "PLAY TO FEEL - A Card Game About Emotions",
+  description: "A card game designed to explore and share emotions through play",
 };
 
 export default function RootLayout({
