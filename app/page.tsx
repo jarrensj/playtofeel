@@ -9,14 +9,34 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle email submission here
-    console.log("Email submitted:", email);
-    setSubmitted(true);
-    setTimeout(() => {
-      setEmail("");
-      setShowForm(false);
-      setSubmitted(false);
-    }, 2000);
+    
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        console.error('Failed to submit email:', result);
+        alert(result.error || 'Failed to join waitlist. Please try again.');
+        return;
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setEmail("");
+        setShowForm(false);
+        setSubmitted(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting email:', error);
+      alert('Failed to join waitlist. Please try again.');
+    }
   };
 
   return (
