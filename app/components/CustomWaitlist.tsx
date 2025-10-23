@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import FallingEmojis from "./FallingEmojis";
 
 export default function CustomWaitlist() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [showHugs, setShowHugs] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,6 +26,8 @@ export default function CustomWaitlist() {
         setStatus("success");
         setMessage("Thanks! You're on the waitlist 🎉");
         setEmail("");
+        setShowHugs(true);
+        setTimeout(() => setShowHugs(false), 3000);
       } else {
         setStatus("error");
         setMessage(data.error || "Something went wrong");
@@ -35,7 +39,8 @@ export default function CustomWaitlist() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto relative">
+      <FallingEmojis show={showHugs} />
       <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20">
         <h2 className="text-2xl font-bold mb-2 text-center">Join the Waitlist</h2>
         <p className="text-gray-300 text-center mb-6">
