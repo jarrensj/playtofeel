@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import FallingEmojis from "./components/FallingEmojis";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showHugs, setShowHugs] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,11 +30,15 @@ export default function Home() {
       }
 
       setSubmitted(true);
+      setShowHugs(true);
       setTimeout(() => {
         setEmail("");
         setShowForm(false);
         setSubmitted(false);
       }, 2000);
+      setTimeout(() => {
+        setShowHugs(false);
+      }, 6000);
     } catch (error) {
       console.error('Error submitting email:', error);
       alert('Failed to join waitlist. Please try again.');
@@ -43,6 +49,7 @@ export default function Home() {
     <main className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden">
       {/* Grain overlay */}
       <div className="grain-overlay"></div>
+      <FallingEmojis show={showHugs} />
       
       <div className="max-w-4xl w-full text-center space-y-8 animate-fade-in relative z-10">
         {/* Main heading */}
