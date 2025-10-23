@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+interface FallingEmoji {
+  id: number;
+  left: number;
+  delay: number;
+  duration: number;
+}
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [fallingEmojis, setFallingEmojis] = useState<FallingEmoji[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,11 +36,29 @@ export default function Home() {
       }
 
       setSubmitted(true);
+      
+      // Generate falling hug emojis
+      const emojis: FallingEmoji[] = [];
+      for (let i = 0; i < 15; i++) {
+        emojis.push({
+          id: Date.now() + i,
+          left: Math.random() * 100,
+          delay: Math.random() * 2,
+          duration: 3 + Math.random() * 2,
+        });
+      }
+      setFallingEmojis(emojis);
+      
       setTimeout(() => {
         setEmail("");
         setShowForm(false);
         setSubmitted(false);
       }, 2000);
+      
+      // Clear emojis after animation completes
+      setTimeout(() => {
+        setFallingEmojis([]);
+      }, 6000);
     } catch (error) {
       console.error('Error submitting email:', error);
       alert('Failed to join waitlist. Please try again.');
@@ -43,6 +69,21 @@ export default function Home() {
     <main className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden">
       {/* Grain overlay */}
       <div className="grain-overlay"></div>
+      
+      {/* Falling hug emojis */}
+      {fallingEmojis.map((emoji) => (
+        <div
+          key={emoji.id}
+          className="falling-emoji"
+          style={{
+            left: `${emoji.left}%`,
+            animationDelay: `${emoji.delay}s`,
+            animationDuration: `${emoji.duration}s`,
+          }}
+        >
+          🤗
+        </div>
+      ))}
       
       <div className="max-w-4xl w-full text-center space-y-8 animate-fade-in relative z-10">
         {/* Main heading */}
