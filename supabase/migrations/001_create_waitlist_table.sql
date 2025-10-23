@@ -26,10 +26,3 @@ create policy "Allow public inserts"
     and length(email) <= 255
   );
 
--- Create policy to allow service role to read all entries
-create policy "Allow authenticated reads"
-  on public.waitlist
-  for select
-  to authenticated
-  using (true);
-
